@@ -62,7 +62,7 @@ KernelTemplate<FWD_MODE, D_QK>::sparse_attn_fwd_kernel_devfunc(const ArgT &param
         fence_barrier_init();
     } else if (warp_idx == 2) {
         cute::TMEM::Allocator2Sm().allocate(512, smem.tmem_start_addr.data());
-        KU_TRAP_ONLY_DEVICE_ASSERT(smem.tmem_start_addr.data()[0] == 0);
+        KU_TRAP_ONLY_DEVICE_ASSERT((smem.tmem_start_addr.data()[0] & 0xFFFFu) == 0);
         cute::TMEM::Allocator2Sm().release_allocation_lock();
     } else if (warp_idx == 3 && elect_one_sync()) {
         CUTE_UNROLL

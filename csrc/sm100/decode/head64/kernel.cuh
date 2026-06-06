@@ -61,7 +61,7 @@ KernelTemplate<MODEL_TYPE>
             cutlass::arch::fence_barrier_init();
         }
         cute::TMEM::Allocator1Sm().allocate(512, plan.tmem_start_addr.data());
-        KU_TRAP_ONLY_DEVICE_ASSERT(plan.tmem_start_addr.data()[0] == 0);
+        KU_TRAP_ONLY_DEVICE_ASSERT((plan.tmem_start_addr.data()[0] & 0xFFFFu) == 0);
         cute::TMEM::Allocator1Sm().release_allocation_lock();
     }
     __syncthreads();
